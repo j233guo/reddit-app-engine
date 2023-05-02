@@ -13,7 +13,7 @@ def get_post_list():
         res = api.get(url=f'r/{params["subreddit"]}/{params["option"]}')
         return make_response(jsonify(res["data"]["children"]), 200)
     except Exception as e:
-        return make_response(jsonify({"message": "Encountered an error", "code": -1}), 200)
+        return make_response(jsonify({ "message": "Encountered an error", "code": -1 }), 200)
     
 @contents.route('/post', methods=["POST"])
 @cross_origin()
@@ -23,4 +23,4 @@ def get_post():
         res = api.get(url=f'{params["permalink"]}')
         return make_response(jsonify(res), 200)
     except Exception as e:
-        return make_response(jsonify({"message": "Encountered an error", "code": -1}), 200)
+        return make_response(jsonify({ "message": "Encountered an error", "code": -1 }), 200)

@@ -19,5 +19,8 @@ def create_app():
 
     from .account import account as account_blueprint
     app.register_blueprint(account_blueprint)
+
+    from .utils import utils as utils_blueprint
+    app.register_blueprint(utils_blueprint)
     
     return app

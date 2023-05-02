@@ -11,7 +11,8 @@ Clone this repo and install the required dependencies with ```pip install -r req
 It is excluded from this repository for obvious security reasons, but can be created with ```credentials.txt``` as template.***
 
 ## Usage
-Start the app with ```python app.py```. Make POST requests to the server. 
+Start the app with ```python app.py```. Make http requests to the server. 
+All requests are made in POST method.
 
 Check [official Reddit API](https://www.reddit.com/dev/api/) for API path names.
 
@@ -23,6 +24,7 @@ Check [official Reddit API](https://www.reddit.com/dev/api/) for API path names.
 ## API
 | Endpoint | Description | Parameters |
 | --- | --- | --- |
+| ```/check``` | Check if server is working and access token is obtained | none |
 | ```/me``` | Get user info | none |
 | ```/prefs``` | Get user preferences | none |
 | ```/list``` | Get post list from a subreddit | ```subreddit```, ```option```|

@@ -12,7 +12,7 @@ def get_identity():
         res = api.get(url='/api/v1/me')
         return make_response(jsonify(res), 200)
     except Exception as e:
-        return make_response(jsonify({"message": "Encountered an error", "code": -1}), 200)
+        return make_response(jsonify({ "message": "Encountered an error", "code": -1 }), 200)
     
 @account.route('/prefs', methods=["POST"])
 @cross_origin()
@@ -21,4 +21,4 @@ def get_prefs():
         res = api.get(url='/api/v1/me/prefs')
         return make_response(jsonify(res), 200)
     except Exception as e:
-        return make_response(jsonify({"message": "Encountered an error", "code": -1}), 200)
+        return make_response(jsonify({ "message": "Encountered an error", "code": -1 }), 200)
