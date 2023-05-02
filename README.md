@@ -19,3 +19,11 @@ Check [official Reddit API](https://www.reddit.com/dev/api/) for API path names.
 * flask
 * flask-cors
 * requests
+
+## API
+| Endpoint | Description | Parameters |
+| --- | --- | --- |
+| ```/me``` | Get user info | none |
+| ```/prefs``` | Get user preferences | none |
+| ```/list``` | Get post list from a subreddit | ```subreddit```, ```option```|
+| ```/post``` | Get a post or comment | ```permalink```| 
