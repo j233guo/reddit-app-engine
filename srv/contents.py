@@ -11,9 +11,11 @@ def get_post_list():
     try:
         params = request.get_json()
         response = api.get(url=f'r/{params["subreddit"]}/{params["option"]}')
+        response["code"] = 0
         return make_response(jsonify(response), 200)
     except Exception as e:
-        return make_response(jsonify({ "message": str(e), "code": -1 }), 200)
+        response = api.generateErrorResponse(str(e))
+        return make_response(jsonify(response), 200)
     
 @contents.route('/post', methods=["POST"])
 @cross_origin()
@@ -21,6 +23,8 @@ def get_post():
     try:
         params = request.get_json()
         response = api.get(url=f'{params["permalink"]}')
+        response["code"] = 0
         return make_response(jsonify(response), 200)
     except Exception as e:
-        return make_response(jsonify({ "message": str(e), "code": -1 }), 200)
+        response = api.generateErrorResponse(str(e))
+        return make_response(jsonify(response), 200)
