@@ -1,4 +1,5 @@
 import requests
+import math
 
 class NetworkAPI:
     def __init__(self, client_id, secret, username, password):
@@ -31,3 +32,11 @@ class NetworkAPI:
         if res.status_code != 200:
             raise Exception(res.status_code)
         return res.json()
+    
+    def generateErrorResponse(self, error_str):
+        response = { "message": error_str }
+        if str.isdigit(error_str) and len(error_str) == 3:
+            response["code"] = -1
+        else:
+            response["code"] = -2
+        return response
