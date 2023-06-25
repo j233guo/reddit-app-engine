@@ -24,8 +24,8 @@ Check [official Reddit API](https://www.reddit.com/dev/api/) for API path names.
 ## API
 | Endpoint | Description | Parameters |
 | --- | --- | --- |
-| ```/check``` | Check if server is working and access token is obtained | none |
-| ```/me``` | Get user info | none |
-| ```/prefs``` | Get user preferences | none |
-| ```/list``` | Get post list from a subreddit | ```subreddit```, ```option```|
-| ```/post``` | Get a post or comment | ```permalink```| 
+| ```/api/misc/check``` | Check if server is working and access token is obtained | none |
+| ```/api/account/me``` | Get user info | none |
+| ```/api/account/prefs``` | Get user preferences | none |
+| ```/api/general/list``` | Get post list from a subreddit | ```subreddit```, ```option```|
+| ```/api/general/post``` | Get a post or comment | ```permalink```| 

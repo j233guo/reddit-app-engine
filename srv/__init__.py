@@ -20,7 +20,7 @@ def create_app():
     from .account import account as account_blueprint
     app.register_blueprint(account_blueprint)
 
-    from .utils import utils as utils_blueprint
-    app.register_blueprint(utils_blueprint)
+    from .misc import misc as misc_blueprint
+    app.register_blueprint(misc_blueprint)
     
     return app

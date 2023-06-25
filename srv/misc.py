@@ -3,9 +3,9 @@ from flask_cors import cross_origin
 
 from . import api
 
-utils = Blueprint('utils', __name__)
+misc = Blueprint('misc', __name__)
 
-@utils.route('/check', methods=["POST"])
+@misc.route('/api/misc/check', methods=["POST"])
 @cross_origin()
 def check():
     try:
