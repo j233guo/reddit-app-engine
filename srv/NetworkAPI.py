@@ -33,6 +33,12 @@ class NetworkAPI:
             raise Exception(res.status_code)
         return res.json()
     
+    def get_listing(self, url, limit=20):
+        res = requests.get(self._base_url + url, headers=self._headers, params={ "limit": limit })
+        if res.status_code != 200:
+            raise Exception(res.status_code)
+        return res.json()
+    
     def generateErrorResponse(self, error_str):
         response = { "message": error_str }
         if str.isdigit(error_str) and len(error_str) == 3:

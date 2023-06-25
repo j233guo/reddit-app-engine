@@ -27,5 +27,5 @@ Check [official Reddit API](https://www.reddit.com/dev/api/) for API path names.
 | ```/api/misc/check``` | Check if server is working and access token is obtained | none |
 | ```/api/account/me``` | Get user info | none |
 | ```/api/account/prefs``` | Get user preferences | none |
-| ```/api/general/list``` | Get post list from a subreddit | ```subreddit```, ```option```|
-| ```/api/general/post``` | Get a post or comment | ```permalink```| 
+| ```/api/general/listing``` | Get a listing from a subreddit | ```subreddit```, ```listingOption```, ```limit```|
+| ```/api/general/link``` | Get an object from link | ```permalink```| 
