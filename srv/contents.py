@@ -5,7 +5,7 @@ from . import api
 
 contents = Blueprint('contents', __name__)
 
-@contents.route('/list', methods=["POST"])
+@contents.route('/api/general/list', methods=["POST"])
 @cross_origin()
 def get_post_list():
     try:
@@ -17,7 +17,7 @@ def get_post_list():
         response = api.generateErrorResponse(str(e))
         return make_response(jsonify(response), 200)
     
-@contents.route('/post', methods=["POST"])
+@contents.route('/api/general/post', methods=["POST"])
 @cross_origin()
 def get_post():
     try:
