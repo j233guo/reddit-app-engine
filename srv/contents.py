@@ -5,12 +5,12 @@ from . import api
 
 contents = Blueprint('contents', __name__)
 
-@contents.route('/api/general/list', methods=["POST"])
+@contents.route('/api/general/listing', methods=["POST"])
 @cross_origin()
 def get_post_list():
     try:
         params = request.get_json()
-        response = api.get(url=f'r/{params["subreddit"]}/{params["option"]}')
+        response = api.get_listing(url=f'r/{params["subreddit"]}/{params["listingOption"]}', limit=params["limit"])
         response["code"] = 0
         return make_response(jsonify(response), 200)
     except Exception as e:
