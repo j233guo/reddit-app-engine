@@ -8,7 +8,7 @@ app = create_app()
 @app.errorhandler(404)
 @cross_origin()
 def endpoint_not_found(error):
-    return make_response(jsonify({ "message": "invalid url", "code": -2 }, 200))
+    return make_response(jsonify({ 'message': 'invalid url', 'code': -2 }, 200))
 
 if __name__ == '__main__':
     app.run()
