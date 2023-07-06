@@ -17,6 +17,7 @@ def get_post_list():
             post = Post(
                 id = item['data'].get('id'),
                 author = item['data'].get('author', '[deleted]'),
+                created_utc = item['data'].get('created_utc', '0'),
                 media = item['data'].get('media'),
                 num_comments = item['data'].get('num_comments'),
                 permalink = item['data'].get('permalink'),
@@ -48,6 +49,7 @@ def get_post():
         post = Post(
             id = parsed_post_data['data'].get('id'),
             author = parsed_post_data['data'].get('author', '[deleted]'),
+            created_utc = parsed_post_data['data'].get('created_utc', '0'),
             media = parsed_post_data['data'].get('media'),
             num_comments = parsed_post_data['data'].get('num_comments'),
             permalink = parsed_post_data['data'].get('permalink'),
@@ -66,6 +68,7 @@ def get_post():
                 author = item['data'].get('author', '[deleted]'),
                 body = item['data'].get('body'),
                 body_html = item['data'].get('body_html'),
+                created_utc = item['data'].get('created_utc', '0'),
                 permalink = item['data'].get('permalink'),
                 score = item['data'].get('score')
             )

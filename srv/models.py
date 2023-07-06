@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 class Post:
     id: str
     author: str
+    created_utc: int
     media: dict
     num_comments: int
     permalink: str
@@ -22,6 +23,7 @@ class Comment:
     author: str
     body: str
     body_html: str
+    created_utc: int
     permalink: str
     score: int
     
