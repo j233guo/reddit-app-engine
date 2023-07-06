@@ -12,7 +12,7 @@ api = NetworkAPI.NetworkAPI(client_id=client_id, secret=secret, username=usernam
 def create_app():
     app = Flask(__name__)
     if api.get_access_token() == False:
-        raise RuntimeError("Failed to obtain access token.")
+        raise RuntimeError('Failed to obtain access token.')
     
     from .contents import contents as contents_blueprint
     app.register_blueprint(contents_blueprint)

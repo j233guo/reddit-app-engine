@@ -3,8 +3,8 @@ import math
 
 class NetworkAPI:
     def __init__(self, client_id, secret, username, password):
-        self._base_url = "https://oauth.reddit.com/"
-        self._headers = {'User-Agent': 'python:app-engine:v0.0.1 (by /u/anonymousaudience)'}
+        self._base_url = 'https://oauth.reddit.com/'
+        self._headers = { 'User-Agent': 'python:app-engine:v0.0.1 (by /u/anonymousaudience)' }
         self._data = None
         self._auth = None
         self._client_id = client_id
@@ -24,7 +24,7 @@ class NetworkAPI:
         if res.status_code != 200 or 'access_token' not in res.json():
             return False
         self._access_token = res.json()['access_token']
-        self._headers = {**self._headers, **{'Authorization': f"bearer {self._access_token}"}}
+        self._headers = {**self._headers, **{'Authorization': f'bearer {self._access_token}'}}
         return True
 
     def get(self, url):
@@ -34,15 +34,15 @@ class NetworkAPI:
         return res.json()
     
     def get_listing(self, url, limit=20):
-        res = requests.get(self._base_url + url, headers=self._headers, params={ "limit": limit })
+        res = requests.get(self._base_url + url, headers=self._headers, params={ 'limit': limit })
         if res.status_code != 200:
             raise Exception(res.status_code)
         return res.json()
     
     def generateErrorResponse(self, error_str):
-        response = { "message": error_str }
+        response = { 'message': error_str }
         if str.isdigit(error_str) and len(error_str) == 3:
-            response["code"] = -1
+            response['code'] = -1
         else:
-            response["code"] = -2
+            response['code'] = -2
         return response

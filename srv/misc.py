@@ -5,12 +5,12 @@ from . import api
 
 misc = Blueprint('misc', __name__)
 
-@misc.route('/api/misc/check', methods=["POST"])
+@misc.route('/api/misc/check', methods=['POST'])
 @cross_origin()
 def check():
     try:
         if api.check_access_token() == False:
-            return make_response({ "message": "Access token not available", "code": -1 }, 200)
-        return make_response({ "status": "OK", "code": 0 }, 200)
+            return make_response({ 'message': 'Access token not available', 'code': -1 }, 200)
+        return make_response({ 'status': 'OK', 'code': 0 }, 200)
     except Exception as e:
-        return make_response(jsonify({ "message": "Encountered an error", "code": -1 }), 200)
+        return make_response(jsonify({ 'message': 'Encountered an error', 'code': -1 }), 200)
