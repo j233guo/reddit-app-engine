@@ -22,10 +22,10 @@ Check [official Reddit API](https://www.reddit.com/dev/api/) for API path names.
 * requests
 
 ## API
-| Endpoint | Description | Parameters |
-| --- | --- | --- |
-| ```/api/misc/check``` | Check if server is working and access token is obtained | none |
-| ```/api/account/me``` | Get user info | none |
-| ```/api/account/prefs``` | Get user preferences | none |
-| ```/api/general/listing``` | Get a listing from a subreddit | ```subreddit```, ```listingOption```, ```limit```|
-| ```/api/general/link``` | Get an object from link | ```permalink```| 
+| Endpoint | Description | Parameters | Optional |
+| --- | --- | --- | --- |
+| ```/api/misc/check``` | Check if server is working and access token is obtained | | |
+| ```/api/account/me``` | Get user info | | |
+| ```/api/account/prefs``` | Get user preferences | | |
+| ```/api/general/posts``` | Get a list of posts from a subreddit | ```subreddit```, ```listingOption```| ```before```, ```after```, ```limit```|
+| ```/api/general/comments``` | Get the comments or replies of a post | ```subreddit```, ```id```| ```depth```, ```limit```|

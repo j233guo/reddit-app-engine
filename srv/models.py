@@ -6,6 +6,7 @@ class Post:
     author: str
     created_utc: int
     media: dict
+    name: str
     num_comments: int
     permalink: str
     preview: dict
@@ -24,6 +25,7 @@ class Comment:
     body: str
     body_html: str
     created_utc: int
+    name: str
     permalink: str
     score: int
     
