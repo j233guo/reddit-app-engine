@@ -10,11 +10,14 @@ contents = Blueprint('contents', __name__)
 @cross_origin()
 def get_posts():
     try:
-        params = request.get_json()
-        limit = params.get('limit')
-        before = params.get('before')
-        after = params.get('after')
-        data = api.get_listing(url=f"r/{params['subreddit']}/{params['listingOption']}", limit=limit, before=before, after=after)
+        reqjson = request.get_json()
+        url = f"r/{reqjson['subreddit']}/{reqjson['listingOption']}"
+        params = {
+            "limit": reqjson.get('limit'),
+            "before": reqjson.get('before'),
+            "after": reqjson.get('after')
+        }
+        data = api.get(url=url, params=params)
         posts = []
         for item in data['data']['children']:
             post = Post(
@@ -44,9 +47,13 @@ def get_posts():
 @cross_origin()
 def get_comments():
     try:
-        params = request.get_json()
-        limit = params.get('limit')
-        response = api.get_listing(url=params['permalink'], limit=limit)
+        reqjson = request.get_json()
+        url = f"r/{reqjson['subreddit']}/comments/{reqjson['id']}"
+        params = {
+            "limit": reqjson.get('limit'),
+            "depth": reqjson.get('depth')
+        }
+        response = api.get(url=url, params=params)
         comment_list = response[1]
         comments = []
         for item in comment_list['data']['children'][:-1]:
@@ -54,7 +61,7 @@ def get_comments():
                 id = item['data'].get('id'),
                 author = item['data'].get('author', '[deleted]'),
                 body = item['data'].get('body', '[deleted]'),
-                body_html = item['data'].get('body_html', '&lt;div class=\"md\"&gt;&lt;p&gt;[deleted]&lt;/p&gt;\n&lt;/div&gt;'),
+                body_html = item['data'].get('body_html'),
                 created_utc = item['data'].get('created_utc', '0'),
                 name = item['data'].get('name'),
                 permalink = item['data'].get('permalink'),
