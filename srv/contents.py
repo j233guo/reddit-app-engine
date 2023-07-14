@@ -6,12 +6,15 @@ from .models import Post, Comment
 
 contents = Blueprint('contents', __name__)
 
-@contents.route('/api/general/listing', methods=['POST'])
+@contents.route('/api/general/posts', methods=['POST'])
 @cross_origin()
-def get_post_list():
+def get_posts():
     try:
         params = request.get_json()
-        data = api.get_listing(url=f"r/{params['subreddit']}/{params['listingOption']}", limit=params['limit'])
+        limit = params.get('limit')
+        before = params.get('before')
+        after = params.get('after')
+        data = api.get_listing(url=f"r/{params['subreddit']}/{params['listingOption']}", limit=limit, before=before, after=after)
         posts = []
         for item in data['data']['children']:
             post = Post(
@@ -19,6 +22,7 @@ def get_post_list():
                 author = item['data'].get('author', '[deleted]'),
                 created_utc = item['data'].get('created_utc', '0'),
                 media = item['data'].get('media'),
+                name = item['data'].get('name'),
                 num_comments = item['data'].get('num_comments'),
                 permalink = item['data'].get('permalink'),
                 preview = item['data'].get('preview'),
@@ -36,44 +40,28 @@ def get_post_list():
         response = api.generateErrorResponse(str(e))
         return make_response(jsonify(response), 200)
     
-@contents.route('/api/general/post', methods=['POST'])
+@contents.route('/api/general/comments', methods=['POST'])
 @cross_origin()
-def get_post():
+def get_comments():
     try:
         params = request.get_json()
-        response = api.get(url=params['permalink'])
-        post_data = response[0]
+        limit = params.get('limit')
+        response = api.get_listing(url=params['permalink'], limit=limit)
         comment_list = response[1]
         comments = []
-        parsed_post_data = post_data['data']['children'][0]
-        post = Post(
-            id = parsed_post_data['data'].get('id'),
-            author = parsed_post_data['data'].get('author', '[deleted]'),
-            created_utc = parsed_post_data['data'].get('created_utc', '0'),
-            media = parsed_post_data['data'].get('media'),
-            num_comments = parsed_post_data['data'].get('num_comments'),
-            permalink = parsed_post_data['data'].get('permalink'),
-            preview = parsed_post_data['data'].get('preview'),
-            score = parsed_post_data['data'].get('score'),
-            selftext = parsed_post_data['data'].get('selftext', ''),
-            selftext_html = parsed_post_data['data'].get('selftext_html', ''),
-            subreddit = parsed_post_data['data'].get('subreddit'),
-            thumbnail = parsed_post_data['data'].get('thumbnail'),
-            title = parsed_post_data['data'].get('title'),
-            url = parsed_post_data['data'].get('url')
-        )
-        for item in comment_list['data']['children']:
+        for item in comment_list['data']['children'][:-1]:
             comment = Comment(
                 id = item['data'].get('id'),
                 author = item['data'].get('author', '[deleted]'),
-                body = item['data'].get('body'),
-                body_html = item['data'].get('body_html'),
+                body = item['data'].get('body', '[deleted]'),
+                body_html = item['data'].get('body_html', '&lt;div class=\"md\"&gt;&lt;p&gt;[deleted]&lt;/p&gt;\n&lt;/div&gt;'),
                 created_utc = item['data'].get('created_utc', '0'),
+                name = item['data'].get('name'),
                 permalink = item['data'].get('permalink'),
                 score = item['data'].get('score')
             )
             comments.append(comment)
-        return make_response(jsonify({ 'post': post, 'comments': comments, 'code': 0 }), 200)
+        return make_response(jsonify({ 'comments': comments, 'code': 0 }), 200)
     except Exception as e:
         response = api.generateErrorResponse(str(e))
         return make_response(jsonify(response), 200)
