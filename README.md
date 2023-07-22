@@ -11,10 +11,13 @@ Clone this repo and install the required dependencies with ```pip install -r req
 It is excluded from this repository for obvious security reasons, but can be created with ```credentials.txt``` as template.***
 
 ## Usage
-Start the app with ```python app.py```. Make http requests to the server. 
-All requests are made in POST method.
+Option 1: Start the app with ```python app.py```. 
 
-Check [official Reddit API](https://www.reddit.com/dev/api/) for API path names.
+OR
+
+Option 2: Create a new file ```app.spec``` by copying the content of ```app.spec.template``` then build with ```pyinstaller app.spec```. Start the app by running the built executable in dist folder.
+
+Make POST requests.
 
 ## Required Dependencies
 * flask
