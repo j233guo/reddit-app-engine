@@ -72,3 +72,22 @@ def get_comments():
     except Exception as e:
         response = api.generateErrorResponse(str(e))
         return make_response(jsonify(response), 200)
+    
+@contents.route('/api/general/search_reddit_names', methods=['POST'])
+@cross_origin()
+def search_reddit_names():
+    try:
+        reqjson = request.get_json()
+        params = {
+            "include_over_18": reqjson.get('include_over_18', True),
+            "query": reqjson.get('query'),
+            "limit": reqjson.get('limit'),
+            "exact": False,
+            "include_unadvertisable": True
+        }
+        response = api.get(url='/api/search_reddit_names', params=params)
+        names = response.get('names')
+        return make_response(jsonify({ 'names': names, 'code': 0 }), 200)
+    except Exception as e:
+        response = api.generateErrorResponse(str(e))
+        return make_response(jsonify(response), 200)
