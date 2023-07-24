@@ -32,3 +32,4 @@ Make POST requests.
 | ```/api/account/prefs``` | Get user preferences | | |
 | ```/api/general/posts``` | Get a list of posts from a subreddit | ```subreddit```, ```listingOption```| ```before```, ```after```, ```limit```|
 | ```/api/general/comments``` | Get the comments or replies of a post | ```subreddit```, ```id```| ```depth```, ```limit```|
+| ```/api/general/search_reddit_names``` | Search subreddit names that begin with a query string | ```include_over_18```, ```query```|```limit```|
