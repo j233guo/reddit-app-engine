@@ -1,6 +1,6 @@
 # Reddit App Engine
 
-A lightweight python web server that fetches Reddit API. 
+A lightweight python web server that fetches Reddit API and serves [JG Reddit App web app](https://github.com/j233guo/jg-reddit-a).
 
 Created in compliance with [Reddit API rules](https://github.com/reddit-archive/reddit/wiki/API).
 
@@ -10,7 +10,8 @@ Clone this repo and install the required dependencies with ```pip install -r req
 ***This app requires Reddit developer account credentials supplied with a module named ```credentials.py```.
 It is excluded from this repository for obvious security reasons, but can be created with ```credentials.txt``` as template.***
 
-## Usage
+## Usage as Server
+
 Option 1: Start the app with ```python app.py```. 
 
 OR
@@ -18,6 +19,10 @@ OR
 Option 2: Create a new file ```app.spec``` by copying the content of ```app.spec.template``` then build with ```pyinstaller app.spec```. Start the app by running the built executable in dist folder.
 
 Make POST requests.
+
+## To Serve the Frontend Webapp
+[Frontend Source Code](https://github.com/j233guo/jg-reddit-a)
+Build the frontend with ```npm run build``` and place the built files in /srv/webapp. Start the app and go to the root URL from your browser. 
 
 ## Required Dependencies
 * flask

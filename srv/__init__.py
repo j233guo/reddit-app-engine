@@ -10,7 +10,8 @@ password = credentials.get('password')
 api = NetworkAPI.NetworkAPI(client_id=client_id, secret=secret, username=username, password=password)
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='webapp')
+    
     if api.get_access_token() == False:
         raise RuntimeError('Failed to obtain access token.')
     
