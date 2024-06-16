@@ -1,4 +1,5 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
 
 @dataclass
 class Post:
@@ -18,6 +19,7 @@ class Post:
     title: str
     url: str
 
+
 @dataclass
 class Comment:
     id: str
@@ -28,4 +30,3 @@ class Comment:
     name: str
     permalink: str
     score: int
-    

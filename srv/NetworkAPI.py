@@ -1,10 +1,10 @@
 import requests
-import math
+
 
 class NetworkAPI:
     def __init__(self, client_id, secret, username, password):
         self._base_url = 'https://oauth.reddit.com/'
-        self._headers = { 'User-Agent': 'python:app-engine:v0.0.1 (by /u/anonymousaudience)' }
+        self._headers = {'User-Agent': 'python:app-engine:v0.0.1 (by /u/anonymousaudience)'}
         self._data = None
         self._auth = None
         self._client_id = client_id
@@ -14,13 +14,13 @@ class NetworkAPI:
         self._access_token = None
 
     def check_access_token(self):
-        return self._access_token != None
+        return self._access_token is not None
 
     def get_access_token(self):
         self._auth = requests.auth.HTTPBasicAuth(self._client_id, self._secret)
         self._data = {'grant_type': 'password', 'username': self._username, 'password': self._password}
         res = requests.post('https://www.reddit.com/api/v1/access_token',
-                auth=self._auth, data=self._data, headers=self._headers)
+                            auth=self._auth, data=self._data, headers=self._headers)
         if res.status_code != 200 or 'access_token' not in res.json():
             return False
         self._access_token = res.json()['access_token']
@@ -34,7 +34,7 @@ class NetworkAPI:
         return res.json()
 
     def generateErrorResponse(self, error_str):
-        response = { 'message': error_str }
+        response = {'message': error_str}
         if str.isdigit(error_str) and len(error_str) == 3:
             response['code'] = -1
         else:

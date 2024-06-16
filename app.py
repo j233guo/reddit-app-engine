@@ -7,6 +7,7 @@ from srv import create_app
 
 app = create_app()
 
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 @cross_origin()
@@ -17,10 +18,12 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
+
 @app.errorhandler(404)
 @cross_origin()
-def endpoint_not_found(error):
-    return make_response(jsonify({ 'message': 'invalid url', 'code': -2 }), 404)
+def endpoint_not_found(_error):
+    return make_response(jsonify({'message': 'invalid url', 'code': -2}), 404)
+
 
 if __name__ == '__main__':
     app.run()
