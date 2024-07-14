@@ -7,6 +7,7 @@ class Post:
     author: str
     created_utc: int
     media: dict
+    media_metadata: dict
     name: str
     num_comments: int
     permalink: str

@@ -26,6 +26,7 @@ def get_posts():
                 author=item['data'].get('author', '[deleted]'),
                 created_utc=item['data'].get('created_utc', '0'),
                 media=item['data'].get('media'),
+                media_metadata=item['data'].get('media_metadata'),
                 name=item['data'].get('name'),
                 num_comments=item['data'].get('num_comments'),
                 permalink=item['data'].get('permalink'),
