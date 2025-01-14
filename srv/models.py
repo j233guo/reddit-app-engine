@@ -31,3 +31,4 @@ class Comment:
     name: str
     permalink: str
     score: int
+    replies: list

@@ -58,18 +58,47 @@ def get_comments():
         }
         response = api.get(url=url, params=params)
         comment_list = response[1]
+
+        def build_reply_tree(reply_data):
+            reply = Comment(
+                id=reply_data.get('id'),
+                author=reply_data.get('author', '[deleted]'),
+                body=reply_data.get('body', '[deleted]'),
+                body_html=reply_data.get('body_html'),
+                created_utc=reply_data.get('created_utc', '0'),
+                name=reply_data.get('name'),
+                permalink=reply_data.get('permalink'),
+                score=reply_data.get('score'),
+                replies=[]
+            )
+            # Recursively process nested replies
+            replies = []
+            for child in reply_data.get('replies', {}).get('data', {}).get('children', []):
+                if child['kind'] != 'more':  # Skip 'more' type items
+                    replies.append(build_reply_tree(child['data']))
+            reply.replies = replies
+            return reply
+
         comments = []
         for item in comment_list['data']['children'][:-1]:
+            data = item['data']
             comment = Comment(
-                id=item['data'].get('id'),
-                author=item['data'].get('author', '[deleted]'),
-                body=item['data'].get('body', '[deleted]'),
-                body_html=item['data'].get('body_html'),
-                created_utc=item['data'].get('created_utc', '0'),
-                name=item['data'].get('name'),
-                permalink=item['data'].get('permalink'),
-                score=item['data'].get('score')
+                id=data.get('id'),
+                author=data.get('author', '[deleted]'),
+                body=data.get('body', '[deleted]'),
+                body_html=data.get('body_html'),
+                created_utc=data.get('created_utc', '0'),
+                name=data.get('name'),
+                permalink=data.get('permalink'),
+                score=data.get('score'),
+                replies=[]
             )
+            # Build reply tree for top-level comment
+            replies = []
+            for reply in data.get('replies', {}).get('data', {}).get('children', []):
+                if reply['kind'] != 'more':  # Skip 'more' type items
+                    replies.append(build_reply_tree(reply['data']))
+            comment.replies = replies
             comments.append(comment)
         return make_response(jsonify({'comments': comments, 'code': 0}), 200)
     except Exception as e:
