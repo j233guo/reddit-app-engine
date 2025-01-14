@@ -6,88 +6,121 @@ from .models import Post, Comment
 
 contents = Blueprint('contents', __name__)
 
+
 @contents.route('/api/general/posts', methods=['POST'])
 @cross_origin()
 def get_posts():
     try:
-        reqjson = request.get_json()
-        url = f"r/{reqjson['subreddit']}/{reqjson['listingOption']}"
+        req_json = request.get_json()
+        url = f"r/{req_json['subreddit']}/{req_json['listingOption']}"
         params = {
-            "limit": reqjson.get('limit'),
-            "before": reqjson.get('before'),
-            "after": reqjson.get('after')
+            "limit": req_json.get('limit'),
+            "before": req_json.get('before'),
+            "after": req_json.get('after')
         }
         data = api.get(url=url, params=params)
         posts = []
         for item in data['data']['children']:
             post = Post(
-                id = item['data'].get('id'),
-                author = item['data'].get('author', '[deleted]'),
-                created_utc = item['data'].get('created_utc', '0'),
-                media = item['data'].get('media'),
-                name = item['data'].get('name'),
-                num_comments = item['data'].get('num_comments'),
-                permalink = item['data'].get('permalink'),
-                preview = item['data'].get('preview'),
-                score = item['data'].get('score'),
-                selftext = item['data'].get('selftext', ''),
-                selftext_html = item['data'].get('selftext_html', ''),
-                subreddit = item['data'].get('subreddit'),
-                thumbnail = item['data'].get('thumbnail'),
-                title = item['data'].get('title'),
-                url = item['data'].get('url')
+                id=item['data'].get('id'),
+                author=item['data'].get('author', '[deleted]'),
+                created_utc=item['data'].get('created_utc', '0'),
+                media=item['data'].get('media'),
+                media_metadata=item['data'].get('media_metadata'),
+                name=item['data'].get('name'),
+                num_comments=item['data'].get('num_comments'),
+                permalink=item['data'].get('permalink'),
+                preview=item['data'].get('preview'),
+                score=item['data'].get('score'),
+                selftext=item['data'].get('selftext', ''),
+                selftext_html=item['data'].get('selftext_html', ''),
+                subreddit=item['data'].get('subreddit'),
+                thumbnail=item['data'].get('thumbnail'),
+                title=item['data'].get('title'),
+                url=item['data'].get('url')
             )
             posts.append(post)
-        return make_response(jsonify({ 'posts': posts, 'code': 0 }), 200)
+        return make_response(jsonify({'posts': posts, 'code': 0}), 200)
     except Exception as e:
         response = api.generateErrorResponse(str(e))
         return make_response(jsonify(response), 200)
-    
+
+
 @contents.route('/api/general/comments', methods=['POST'])
 @cross_origin()
 def get_comments():
     try:
-        reqjson = request.get_json()
-        url = f"r/{reqjson['subreddit']}/comments/{reqjson['id']}"
+        req_json = request.get_json()
+        url = f"r/{req_json['subreddit']}/comments/{req_json['id']}"
         params = {
-            "limit": reqjson.get('limit'),
-            "depth": reqjson.get('depth')
+            "limit": req_json.get('limit'),
+            "depth": req_json.get('depth')
         }
         response = api.get(url=url, params=params)
         comment_list = response[1]
+
+        def build_reply_tree(reply_data):
+            reply = Comment(
+                id=reply_data.get('id'),
+                author=reply_data.get('author', '[deleted]'),
+                body=reply_data.get('body', '[deleted]'),
+                body_html=reply_data.get('body_html'),
+                created_utc=reply_data.get('created_utc', '0'),
+                name=reply_data.get('name'),
+                permalink=reply_data.get('permalink'),
+                score=reply_data.get('score'),
+                replies=[]
+            )
+            # Recursively process nested replies
+            replies = []
+            for child in reply_data.get('replies', {}).get('data', {}).get('children', []):
+                if child['kind'] != 'more':  # Skip 'more' type items
+                    replies.append(build_reply_tree(child['data']))
+            reply.replies = replies
+            return reply
+
         comments = []
         for item in comment_list['data']['children'][:-1]:
+            data = item['data']
             comment = Comment(
-                id = item['data'].get('id'),
-                author = item['data'].get('author', '[deleted]'),
-                body = item['data'].get('body', '[deleted]'),
-                body_html = item['data'].get('body_html'),
-                created_utc = item['data'].get('created_utc', '0'),
-                name = item['data'].get('name'),
-                permalink = item['data'].get('permalink'),
-                score = item['data'].get('score')
+                id=data.get('id'),
+                author=data.get('author', '[deleted]'),
+                body=data.get('body', '[deleted]'),
+                body_html=data.get('body_html'),
+                created_utc=data.get('created_utc', '0'),
+                name=data.get('name'),
+                permalink=data.get('permalink'),
+                score=data.get('score'),
+                replies=[]
             )
+            # Build reply tree for top-level comment
+            replies = []
+            for reply in data.get('replies', {}).get('data', {}).get('children', []):
+                if reply['kind'] != 'more':  # Skip 'more' type items
+                    replies.append(build_reply_tree(reply['data']))
+            comment.replies = replies
             comments.append(comment)
-        return make_response(jsonify({ 'comments': comments, 'code': 0 }), 200)
+        return make_response(jsonify({'comments': comments, 'code': 0}), 200)
     except Exception as e:
         response = api.generateErrorResponse(str(e))
         return make_response(jsonify(response), 200)
-    
+
+
 @contents.route('/api/general/search_reddit_names', methods=['POST'])
 @cross_origin()
 def search_reddit_names():
     try:
-        reqjson = request.get_json()
+        req_json = request.get_json()
         params = {
-            "include_over_18": reqjson.get('include_over_18', True),
-            "query": reqjson.get('query'),
-            "limit": reqjson.get('limit'),
+            "include_over_18": req_json.get('include_over_18', True),
+            "query": req_json.get('query'),
+            "limit": req_json.get('limit'),
             "exact": False,
             "include_unadvertisable": True
         }
         response = api.get(url='/api/search_reddit_names', params=params)
         names = response.get('names')
-        return make_response(jsonify({ 'names': names, 'code': 0 }), 200)
+        return make_response(jsonify({'names': names, 'code': 0}), 200)
     except Exception as e:
         response = api.generateErrorResponse(str(e))
         return make_response(jsonify(response), 200)

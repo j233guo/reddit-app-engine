@@ -5,6 +5,7 @@ from . import api
 
 account = Blueprint('account', __name__)
 
+
 @account.route('/api/account/me', methods=['POST'])
 @cross_origin()
 def get_identity():
@@ -15,7 +16,8 @@ def get_identity():
     except Exception as e:
         response = api.generateErrorResponse(str(e))
         return make_response(jsonify(response), 200)
-    
+
+
 @account.route('/api/account/prefs', methods=['POST'])
 @cross_origin()
 def get_prefs():

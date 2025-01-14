@@ -9,12 +9,13 @@ password = credentials.get('password')
 
 api = NetworkAPI.NetworkAPI(client_id=client_id, secret=secret, username=username, password=password)
 
+
 def create_app():
     app = Flask(__name__, static_folder='webapp')
-    
-    if api.get_access_token() == False:
+
+    if not api.get_access_token():
         raise RuntimeError('Failed to obtain access token.')
-    
+
     from .contents import contents as contents_blueprint
     app.register_blueprint(contents_blueprint)
 
@@ -23,5 +24,5 @@ def create_app():
 
     from .misc import misc as misc_blueprint
     app.register_blueprint(misc_blueprint)
-    
+
     return app
