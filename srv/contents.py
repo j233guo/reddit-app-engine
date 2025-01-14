@@ -72,11 +72,12 @@ def get_comments():
                 replies=[]
             )
             # Recursively process nested replies
-            replies = []
-            for child in reply_data.get('replies', {}).get('data', {}).get('children', []):
-                if child['kind'] != 'more':  # Skip 'more' type items
-                    replies.append(build_reply_tree(child['data']))
-            reply.replies = replies
+            if type(reply_data.get('replies', None)) != str:
+                replies_to_comment = []
+                for child in reply_data.get('replies', {}).get('data', {}).get('children', []):
+                    if child['kind'] == 't1':
+                        replies_to_comment.append(build_reply_tree(child['data']))
+            reply.replies = replies_to_comment
             return reply
 
         comments = []
@@ -94,11 +95,12 @@ def get_comments():
                 replies=[]
             )
             # Build reply tree for top-level comment
-            replies = []
-            for reply in data.get('replies', {}).get('data', {}).get('children', []):
-                if reply['kind'] != 'more':  # Skip 'more' type items
-                    replies.append(build_reply_tree(reply['data']))
-            comment.replies = replies
+            if type(data.get('replies', None)) != str:
+                replies = []
+                for reply in data.get('replies', {}).get('data', {}).get('children', []):
+                    if reply['kind'] == 't1':
+                        replies.append(build_reply_tree(reply['data']))
+                comment.replies = replies
             comments.append(comment)
         return make_response(jsonify({'comments': comments, 'code': 0}), 200)
     except Exception as e:
