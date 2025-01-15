@@ -73,11 +73,11 @@ def get_comments():
             )
             # Recursively process nested replies
             if type(reply_data.get('replies', None)) != str:
-                replies_to_comment = []
+                replies = []
                 for child in reply_data.get('replies', {}).get('data', {}).get('children', []):
                     if child['kind'] == 't1':
-                        replies_to_comment.append(build_reply_tree(child['data']))
-            reply.replies = replies_to_comment
+                        replies.append(build_reply_tree(child['data']))
+                reply.replies = replies
             return reply
 
         comments = []
