@@ -2,16 +2,20 @@
 
 A lightweight python web server that fetches Reddit API and serves [JG Reddit App web app](https://github.com/j233guo/jg-reddit-a).
 
-Created in compliance with [Reddit API rules](https://github.com/reddit-archive/reddit/wiki/API).
+This app is created in compliance with, and all usages should comply with, [Reddit API rules](https://github.com/reddit-archive/reddit/wiki/API).
+
+## Before Starting
+
+This app requires Reddit developer account credentials.
+
+To obtain your own credentials, log into Reddit and go to [Reddit Preferences Page](https://www.reddit.com/prefs/apps/) where you can find the app tab. Click "create another app", and in the form, select "script", fill in the required fields, and click "create app". 
+Once the app is created, you can find the client id below the app name, and secret key in the "edit" tab.
 
 ## Setup
+
 Clone this repo and install the required dependencies with ```pip install -r requirements.txt```. 
 
-***
-This app requires Reddit developer account credentials supplied with an env file.
-To create the env file, copy ```env.template``` as template and fill in the values.
-To obtain your own credentials, create a Reddit developer account and create an app [here](https://www.reddit.com/prefs/apps/).
-***
+The Reddit credentials are supplied with an env file. To create the env file, copy ```env.template``` as template and fill in the values with your own reddit app credentials.
 
 ## Usage as Server
 
