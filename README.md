@@ -7,8 +7,11 @@ Created in compliance with [Reddit API rules](https://github.com/reddit-archive/
 ## Setup
 Clone this repo and install the required dependencies with ```pip install -r requirements.txt```. 
 
-***This app requires Reddit developer account credentials supplied with a module named ```credentials.py```.
-It is excluded from this repository for obvious security reasons, but can be created with ```credentials.txt``` as template.***
+***
+This app requires Reddit developer account credentials supplied with an env file.
+To create the env file, copy ```env.template``` as template and fill in the values.
+To obtain your own credentials, create a Reddit developer account and create an app [here](https://www.reddit.com/prefs/apps/).
+***
 
 ## Usage as Server
 
@@ -28,6 +31,7 @@ Build the frontend with ```npm run build``` and place the built files in /srv/we
 * flask
 * flask-cors
 * requests
+* python-dotenv
 
 ## API
 | Endpoint                               | Description                                             | Parameters                           | Optional                               |

@@ -1,14 +1,31 @@
 from flask import Flask
-from credentials import credentials
 from . import NetworkAPI
+from dotenv import load_dotenv
 
-client_id = credentials.get('client_id')
-secret = credentials.get('secret')
-username = credentials.get('username')
-password = credentials.get('password')
+import os
+
+load_dotenv()
+
+required_credentials = [
+    'REDDIT_API_CLIENT_ID',
+    'REDDIT_API_SECRET',
+    'REDDIT_API_USERNAME',
+    'REDDIT_API_PASSWORD'
+]
+    
+missing_credentials = [var for var in required_credentials if not os.environ.get(var)]
+if missing_credentials:
+    raise EnvironmentError(
+        f"Missing required environment variables: {', '.join(missing_credentials)}\n"
+        "Check your .env file or deployment environment configuration."
+    )
+
+client_id = os.environ.get('REDDIT_API_CLIENT_ID')
+secret = os.environ.get('REDDIT_API_SECRET')
+username = os.environ.get('REDDIT_API_USERNAME')
+password = os.environ.get('REDDIT_API_PASSWORD')
 
 api = NetworkAPI.NetworkAPI(client_id=client_id, secret=secret, username=username, password=password)
-
 
 def create_app():
     app = Flask(__name__, static_folder='webapp')
