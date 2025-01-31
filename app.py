@@ -23,11 +23,7 @@ def serve_frontend(path):
 @app.route('/', methods=['GET'])
 @cross_origin()
 def root():
-    access_token = NetworkAPI.check_access_token()
-    if access_token:
-        return jsonify({'message': 'Hello, World! The app is up and running. Please make POST requests listed in the README.'})
-    else:   
-        return jsonify({'message': 'Hello, World! The app is on but it\'s not ready to take requests because it\'s missing Reddit access token.'})
+    return jsonify({'message': 'Hello, World! The app is up and running. Please make POST requests listed in the README.'})
 
 
 @app.errorhandler(404)
