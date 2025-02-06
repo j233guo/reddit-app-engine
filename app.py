@@ -4,26 +4,33 @@ from flask import jsonify, make_response, send_from_directory
 from flask_cors import cross_origin
 
 from srv import create_app
-from srv.NetworkAPI import NetworkAPI
 
 app = create_app()
 
-
-@app.route('/home', defaults={'path': ''})
 @app.route('/<path:path>')
 @cross_origin()
 def serve_frontend(path):
-    print(app.static_folder)
     if path != "" and os.path.exists(app.static_folder + '/' + path):
         return send_from_directory(app.static_folder, path)
     else:
-        return send_from_directory(app.static_folder, 'index.html')
+        return send_from_directory(app.static_folder, 'main-page.html')
     
 
 @app.route('/', methods=['GET'])
 @cross_origin()
-def root():
-    return jsonify({'message': 'Hello, World! The app is up and running. Please make POST requests listed in the README.'})
+def main_page():
+    try:
+        return send_from_directory(app.static_folder, 'main-page.html')
+    except Exception:
+        return send_from_directory(app.static_folder, 'page-unavailable.html')
+
+@app.route('/home', methods=['GET'])
+@cross_origin()
+def frontend_page():
+    try:
+        return send_from_directory(app.static_folder, 'index.html')
+    except Exception:
+        return send_from_directory(app.static_folder, 'page-unavailable.html')
 
 
 @app.errorhandler(404)

@@ -60,7 +60,7 @@ def get_comments():
         comment_list = response[1]
 
         def build_reply_tree(reply_data):
-            reply = Comment(
+            self_reply = Comment(
                 id=reply_data.get('id'),
                 author=reply_data.get('author', '[deleted]'),
                 body=reply_data.get('body', '[deleted]'),
@@ -73,12 +73,12 @@ def get_comments():
             )
             # Recursively process nested replies
             if type(reply_data.get('replies', None)) != str:
-                replies = []
+                child_replies = []
                 for child in reply_data.get('replies', {}).get('data', {}).get('children', []):
                     if child['kind'] == 't1':
                         replies.append(build_reply_tree(child['data']))
-                reply.replies = replies
-            return reply
+                self_reply.replies = child_replies
+            return self_reply
 
         comments = []
         for item in comment_list['data']['children'][:-1]:
