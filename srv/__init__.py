@@ -27,8 +27,9 @@ password = os.environ.get('REDDIT_API_PASSWORD')
 
 api = NetworkAPI.NetworkAPI(client_id=client_id, secret=secret, username=username, password=password)
 
+
 def create_app():
-    app = Flask(__name__, static_folder='webapp')
+    app = Flask(__name__, static_folder='static')
 
     if not api.get_access_token():
         raise RuntimeError('Failed to obtain access token.')
